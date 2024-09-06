@@ -1,3 +1,6 @@
+import java.awt.*;
+import java.awt.image.BufferStrategy;
+
 public class Game implements Runnable {
 
     private final int WIDTH = 800;
@@ -7,6 +10,8 @@ public class Game implements Runnable {
     private int fps;
     private Thread thread;
 
+    private BufferStrategy bufferStrategy;
+
     public Game() {
         this.window = new Window("Game", WIDTH, HEIGHT);
 
@@ -15,18 +20,32 @@ public class Game implements Runnable {
     }
 
     public void update() {
-        System.out.println("Update");
         ups++;
     }
 
     public void draw() {
-        System.out.println("Draw");
+        if (this.bufferStrategy == null) {
+            this.window.getCanvas().createBufferStrategy(2);
+            this.bufferStrategy = this.window.getCanvas().getBufferStrategy();
+        }
+
+        Graphics2D graphics = (Graphics2D) this.bufferStrategy.getDrawGraphics();
+
+        graphics.clearRect(0, 0, WIDTH, HEIGHT);
+        
+        // Zona de dibujado
+        graphics.fillRect(0, 0, 20, 20);
+        // Fin zona de dibujado
+
+        graphics.dispose();
+
+        this.bufferStrategy.show();
         fps++;
     }
 
     @Override
     public void run() {
-        final int UPS = 300;
+        final int UPS = 15;
         final int FPS = 30;
         final double NS_PER_SECOND = 1_000_000_000;
         final double NS_PER_UPDATE = NS_PER_SECOND / UPS;
@@ -50,8 +69,8 @@ public class Game implements Runnable {
             }
 
             if (frameElapsedTime > NS_PER_FRAME) {
-                this.draw();
                 frameRef = currentTime;
+                this.draw();
             }
 
             if (currentTime - counterRef > NS_PER_SECOND) {
