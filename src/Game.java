@@ -3,8 +3,12 @@ import java.awt.image.BufferStrategy;
 
 public class Game implements Runnable {
 
-    private final int WIDTH = 800;
-    private final int HEIGHT = 600;
+    public static int TOKENS_X_COUNT = 20;
+    public static int TOKENS_Y_COUNT = 20;
+    public static int TOKEN_SIZE = 38;
+    public static int WIDTH = TOKENS_X_COUNT * TOKEN_SIZE;
+    public static int HEIGHT = TOKENS_Y_COUNT * TOKEN_SIZE;
+
     private final Window window;
     private int ups;
     private int fps;
@@ -32,9 +36,9 @@ public class Game implements Runnable {
         Graphics2D graphics = (Graphics2D) this.bufferStrategy.getDrawGraphics();
 
         graphics.clearRect(0, 0, WIDTH, HEIGHT);
-        
+
         // Zona de dibujado
-        graphics.fillRect(0, 0, 20, 20);
+        Helper.drawGrid(graphics);
         // Fin zona de dibujado
 
         graphics.dispose();
@@ -45,7 +49,7 @@ public class Game implements Runnable {
 
     @Override
     public void run() {
-        final int UPS = 15;
+        final int UPS = 10;
         final int FPS = 30;
         final double NS_PER_SECOND = 1_000_000_000;
         final double NS_PER_UPDATE = NS_PER_SECOND / UPS;
