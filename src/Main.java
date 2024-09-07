@@ -1,7 +1,15 @@
 public class Main {
 
     public static void main(String[] args) {
-        Game game = new Game();
+        char[][] tokens = {
+                {'X', '.', '.', 'X', '.', '.'},
+                {'X', '.', 'X', 'X', '.', '.'},
+                {'X', '.', 'X', 'X', '.', '.'},
+                {'X', '.', 'X', 'X', '.', '.'},
+                {'X', '.', 'X', 'X', '.', '.'},
+                {'.', '.', '.', 'X', '.', '.'}
+        };
+        Game game = new Game(tokens);
         game.start();
     }
 }

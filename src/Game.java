@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.util.ArrayList;
 
 public class Game implements Runnable {
 
@@ -15,8 +16,11 @@ public class Game implements Runnable {
     private Thread thread;
 
     private BufferStrategy bufferStrategy;
+    private final TokenManager tokenManager;
 
-    public Game() {
+    public Game(char[][] tokens) {
+        this.tokenManager = new TokenManager(tokens);
+
         this.window = new Window("Game", WIDTH, HEIGHT);
 
         this.ups = 0;
@@ -24,6 +28,7 @@ public class Game implements Runnable {
     }
 
     public void update() {
+        this.tokenManager.update();
         ups++;
     }
 
@@ -38,6 +43,7 @@ public class Game implements Runnable {
         graphics.clearRect(0, 0, WIDTH, HEIGHT);
 
         // Zona de dibujado
+        this.tokenManager.draw(graphics);
         Helper.drawGrid(graphics);
         // Fin zona de dibujado
 
@@ -49,7 +55,7 @@ public class Game implements Runnable {
 
     @Override
     public void run() {
-        final int UPS = 10;
+        final int UPS = 1;
         final int FPS = 30;
         final double NS_PER_SECOND = 1_000_000_000;
         final double NS_PER_UPDATE = NS_PER_SECOND / UPS;
